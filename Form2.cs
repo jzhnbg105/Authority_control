@@ -146,27 +146,28 @@ namespace WindowsFormsApp1
             Console.WriteLine(myHitInfo.ColumnIndex);
         }
 
-//        Send query request to google sheets
 
-//        private static IList<IList<Object>> GenerateData()
-//        {
-//            List<IList<Object>> objNewRecords = new List<IList<Object>>();
-//            IList<Object> obj = new List<Object>();
-//            obj.Add("Column - 1");
-//            obj.Add("Column - 2");
-//            obj.Add("Column - 3");
-//            objNewRecords.Add(obj);
-//            return objNewRecords;
-//        }
+        //        Send query request to google sheets
 
-//        private static void UpdatGoogleSheet(IList<IList<Object>> values, string spreadsheetId, string newRange, SheetsService service)
-//        {
-//            SpreadsheetsResource.ValuesResource.AppendRequest request =
-//               service.Spreadsheets.Values.Append(new Google.Apis.Sheets.v4.Data.ValueRange() { Values = values }, spreadsheetId, newRange);
-//            request.InsertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum.INSERTROWS;
-//            request.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
-//            var response = request.Execute();
-//        }
+        //        private static IList<IList<Object>> GenerateData()
+        //        {
+        //            List<IList<Object>> objNewRecords = new List<IList<Object>>();
+        //            IList<Object> obj = new List<Object>();
+        //            obj.Add("Column - 1");
+        //            obj.Add("Column - 2");
+        //            obj.Add("Column - 3");
+        //            objNewRecords.Add(obj);
+        //            return objNewRecords;
+        //        }
+
+        //        private static void UpdatGoogleSheet(IList<IList<Object>> values, string spreadsheetId, string newRange, SheetsService service)
+        //        {
+        //            SpreadsheetsResource.ValuesResource.AppendRequest request =
+        //               service.Spreadsheets.Values.Append(new Google.Apis.Sheets.v4.Data.ValueRange() { Values = values }, spreadsheetId, newRange);
+        //            request.InsertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum.INSERTROWS;
+        //            request.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.USERENTERED;
+        //            var response = request.Execute();
+        //        }
 
 
         //Only needed when calling components of another form

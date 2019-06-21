@@ -44,7 +44,13 @@ namespace WindowsFormsApp1
                         frmPopup.Text = Username;
                         break;
 
-                    case "Database":
+                    case "Utility":
+                        Form5 frm5 = new Form5();
+                        frm5.Show();
+                        frm5.Text = Username;
+                        break;
+
+                    case "Utility Management":
                         Form4 frm4 = new Form4();
                         frm4.Show();
                         frm4.Text = Username;

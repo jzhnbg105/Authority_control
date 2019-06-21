@@ -81,21 +81,25 @@ namespace WindowsFormsApp1
                     {
                         MessageBox.Show("Welcome " + row[2] + " " + Username);
                         this.Close();
+                        //                        switch (row[2])
+                        //                        {
+                        //                            case "Admin":
+                        Console.WriteLine(row[2].ToString());
                         formPopup frmPopup = new formPopup();
+                        frmPopup.UserRole = row[2].ToString();
                         frmPopup.Show();
                         frmPopup.Text = Username;
-                        i++;
                         break;
+
+//                        }
                     }
+                    i++;
                     Console.WriteLine("{0}, {1}", row[0], row[1]);
                 }
                 if (i == 0)
                 {
                     MessageBox.Show("Your profile is not  found");
                     this.Close();
-                    formPopup frm3 = new formPopup();
-                    frm3.Show();
-                    frm3.Text = Username;
                 }
             }
             else

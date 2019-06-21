@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace WindowsFormsApp1
 {
@@ -8,6 +10,7 @@ namespace WindowsFormsApp1
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+        public string UserRole { get; set; }
 
         /// <summary>
         /// Clean up any resources being used.
@@ -37,11 +40,6 @@ namespace WindowsFormsApp1
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Login",
-            "Admin",
-            "Navigation",
-            "Database"});
             this.comboBox1.Location = new System.Drawing.Point(68, 62);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -66,11 +64,34 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.comboBox1);
             this.Name = "formPopup";
             this.Text = "FormPopup";
+            this.Load += new System.EventHandler(this.formPopup_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
+        private void formPopup_Load(object sender, EventArgs e)
+        {
+            switch (UserRole)
+            {
+                case "Admin":
+                    this.comboBox1.Items.AddRange(new object[] {
+                    "Login",
+                    "Admin",
+                    "Navigation",
+                    "Utility",
+                    "Utility Management"});
+                    break;
+
+                case "Tier1":
+                    this.comboBox1.Items.AddRange(new object[] {
+                    "Login",
+                    "Navigation",
+                    "Utility",
+                    "Utility Management"});
+                    break;
+            }
+        }
         #endregion
 
         private System.Windows.Forms.ComboBox comboBox1;
