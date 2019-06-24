@@ -36,6 +36,7 @@ namespace WindowsFormsApp1
             // 
             // comboBox1
             // 
+            //DataSet dataSet = new DataSet();
             dataSet.ReadXml(@"Utility.xml");
             this.comboBox1.DataSource = dataSet.Tables[0];
             this.comboBox1.DisplayMember = dataSet.Tables[0].Columns[1].ToString();
