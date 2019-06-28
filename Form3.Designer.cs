@@ -80,7 +80,8 @@ namespace WindowsFormsApp1
                     "Admin",
                     "Navigation",
                     "Utility",
-                    "Utility Management"});
+                    "Utility Management",
+                    "Batch Processing"});
                     break;
 
                 case "Tier1":
@@ -88,7 +89,8 @@ namespace WindowsFormsApp1
                     "Login",
                     "Navigation",
                     "Utility",
-                    "Utility Management"});
+                    "Utility Management",
+                    "Batch Processing"});
                     break;
             }
         }

@@ -56,6 +56,12 @@ namespace WindowsFormsApp1
                         frm4.Text = Username;
                         break;
 
+                    case "Batch Processing":
+                        Form6 frm6 = new Form6();
+                        frm6.Show();
+                        frm6.Text = Username;
+                        break;
+
                 }
                 //Do something with the selected item
             }
