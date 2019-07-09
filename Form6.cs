@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -40,7 +42,7 @@ namespace WindowsFormsApp1
 
             // Allow the user to select multiple images.
             openFileDialog1.Multiselect = true;
-            openFileDialog1.Title = "My Image Browser";
+            openFileDialog1.Title = "Select Files";
         }
 
         private void selectFiles()
@@ -81,9 +83,13 @@ namespace WindowsFormsApp1
             {
                 // Read the files
                 var excel = new Excel.Application();
-                foreach (String file in openFileDialog1.FileNames)
+                excel.DisplayAlerts = false;
+                foreach (ListViewItem file in listView1.Items)
                 {
-                    var workbook = excel.Workbooks.Open(file);
+                    var workbook = excel.Workbooks.Open(file.Text, WriteResPassword: "res", ReadOnly: false, IgnoreReadOnlyRecommended: true);
+//                    var workbook = excel.Workbooks.Open(file);
+                    workbook.Application.DisplayAlerts = false;
+                    workbook.Application.Visible = false;
                     try
                     {
                         for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -99,15 +105,18 @@ namespace WindowsFormsApp1
                         MessageBox.Show("Security error. Please contact your administrator for details.\n\n" +
                             "Error message: " + ex.Message + "\n\n" +
                             "Details (send to Support):\n\n" + ex.StackTrace
-                        );
+                            );
                     }
                     catch (Exception ex)
                     {
                         // Could not load the image - probably related to Windows file system permissions.
-                        MessageBox.Show("Cannot open the file: " + file.Substring(file.LastIndexOf('\\'))
-                            + ". You may not have permission to read the file, or " +
-                            "it may be corrupt.\n\nReported error: " + ex.Message);
+                        MessageBox.Show("Cannot open the file: " + file.Text.Substring(file.Text.LastIndexOf('\\'))
+                        + ". You may not have permission to read the file, or " +
+                        "it may be corrupt.\n\nReported error: " + ex.Message);
                     }
+                    workbook.Save();
+                    workbook.Saved = true;
+                    workbook.Close();
                 }
                 excel.Quit();
             }
@@ -133,10 +142,15 @@ namespace WindowsFormsApp1
 
         private void Cng_Tab_Name_Btn_Click(object sender, EventArgs e)
         {
+            CheckExcellProcesses();
             var excel = new Excel.Application();
+//            excel.DisplayAlerts = false;
             foreach (ListViewItem file in listView1.Items)
             {
-                var workbook = excel.Workbooks.Open(file.Text);
+//                var workbook = excel.Workbooks.Open(file.Text);
+                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.PasswordChar, WriteResPassword: Write_Pass.PasswordChar, ReadOnly: false, IgnoreReadOnlyRecommended: true);
+//                workbook.Application.DisplayAlerts = false;
+//                workbook.Application.Visible = false;
                 try
                 {
                     for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -161,17 +175,22 @@ namespace WindowsFormsApp1
                         + ". You may not have permission to read the file, or " +
                         "it may be corrupt.\n\nReported error: " + ex.Message);
                 }
+//                workbook.Save();
+//                workbook.Saved = true;
+                workbook.Close();
             }
             excel.Quit();
+            KillExcel();
         }
 
         private void Add_Columns_Click(object sender, EventArgs e)
         {
+            CheckExcellProcesses();
             Console.WriteLine(Added_Range_Text.Text);
             var excel = new Excel.Application();
             foreach (ListViewItem file in listView1.Items)
             {
-                var workbook = excel.Workbooks.Open(file.Text);
+                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.PasswordChar, WriteResPassword: Write_Pass.PasswordChar, ReadOnly: false, IgnoreReadOnlyRecommended: true);
                 try
                 {
                     for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -202,17 +221,20 @@ namespace WindowsFormsApp1
                         + ". You may not have permission to read the file, or " +
                         "it may be corrupt.\n\nReported error: " + ex.Message);
                 }
+                workbook.Close();
             }
             excel.Quit();
+            KillExcel();
         }
 
         private void Mod_Form_Btn_Click(object sender, EventArgs e)
         {
+            CheckExcellProcesses();
             Console.WriteLine(Selected_Cell_Text.Text);
             var excel = new Excel.Application();
             foreach (ListViewItem file in listView1.Items)
             {
-                var workbook = excel.Workbooks.Open(file.Text);
+                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.PasswordChar, WriteResPassword: Write_Pass.PasswordChar, ReadOnly: false, IgnoreReadOnlyRecommended: true);
                 try
                 {
                     for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -243,17 +265,23 @@ namespace WindowsFormsApp1
                         + ". You may not have permission to read the file, or " +
                         "it may be corrupt.\n\nReported error: " + ex.Message);
                 }
+                workbook.Close();
             }
             excel.Quit();
+            KillExcel();
         }
 
         private void Rep_Form_Rep_Click(object sender, EventArgs e)
         {
+            CheckExcellProcesses();
             Console.WriteLine(From_Cell_Text.Text);
             var excel = new Excel.Application();
+//            excel.DisplayAlerts = false;
             foreach (ListViewItem file in listView1.Items)
             {
-                var workbook = excel.Workbooks.Open(file.Text);
+                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.PasswordChar, WriteResPassword: Write_Pass.PasswordChar, ReadOnly: false, IgnoreReadOnlyRecommended: true);
+                //                workbook.Application.DisplayAlerts = false;
+                //                workbook.Application.Visible = false;
                 try
                 {
                     for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -285,8 +313,38 @@ namespace WindowsFormsApp1
                         + ". You may not have permission to read the file, or " +
                         "it may be corrupt.\n\nReported error: " + ex.Message);
                 }
+                workbook.Close();
             }
             excel.Quit();
+            KillExcel();
+        }
+
+        Hashtable myHashtable;
+        private void CheckExcellProcesses()
+        {
+            Process[] AllProcesses = Process.GetProcessesByName("excel");
+            myHashtable = new Hashtable();
+            int iCount = 0;
+
+            foreach (Process ExcelProcess in AllProcesses)
+            {
+                myHashtable.Add(ExcelProcess.Id, iCount);
+                iCount = iCount + 1;
+            }
+        }
+
+        private void KillExcel()
+        {
+            Process[] AllProcesses = Process.GetProcessesByName("excel");
+
+            // check to kill the right process
+            foreach (Process ExcelProcess in AllProcesses)
+            {
+                if (myHashtable.ContainsKey(ExcelProcess.Id) == false)
+                    ExcelProcess.Kill();
+            }
+
+            AllProcesses = null;
         }
     }
 }
