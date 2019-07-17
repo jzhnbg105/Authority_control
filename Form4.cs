@@ -18,6 +18,23 @@ namespace WindowsFormsApp1
     public partial class Form4 : Form
     {
         public DataSet ds = new DataSet();
+        string _fileContent;
+        string _filePath;
+
+        public string fileContent
+        {
+            get { return _fileContent; }
+            set { _fileContent = value; }
+        }
+
+        public string filePath
+        {
+            get { return _filePath; }
+            set { _filePath = value; }
+        }
+        //        public string fileContent;
+//        public string filePath;
+
         public Form4()
         {
             InitializeComponent();
@@ -55,11 +72,9 @@ namespace WindowsFormsApp1
         private void InitializeOpenFileDialog()
         {
             Console.WriteLine("Pass");
-            // Set the file dialog to filter for graphics files.
+            // Set the file dialog to filter for different kinds of files.
             openFileDialog1.InitialDirectory = @"O:\ACTCOM\Reserving\Documentation\Working Files\ZHJ";
             openFileDialog1.Filter = "txt files (*.txt)|*.txt|Excel Files|*.xls;*.xlsx;*.xlsm|All files (*.*)|*.*";
-
-            // Allow the user to select multiple images.
             openFileDialog1.Title = "Select Files";
         }
 
@@ -72,8 +87,9 @@ namespace WindowsFormsApp1
 
         private void selectFiles()
         {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
+//            var fileContent = string.Empty;
+//            var filePath = string.Empty;
+//            int items = dataGridView1.Rows.Count;
 
             DialogResult dr = openFileDialog1.ShowDialog();
             if (dr == System.Windows.Forms.DialogResult.OK)
@@ -81,9 +97,12 @@ namespace WindowsFormsApp1
                 //Get the path of specified file
                 filePath = openFileDialog1.FileName;
                 //                        DataRow newRow = ds.Tables[0].NewRow();
-                ds.Tables[0].Rows.Add(dataGridView1.Rows.Count, Path.GetFileName(filePath), filePath,
-                    Path.GetExtension(filePath).Replace(".", ""), System.IO.File.GetAccessControl(filePath).GetOwner(typeof(System.Security.Principal.NTAccount)).ToString(),
-                File.GetCreationTime(filePath), File.GetLastWriteTime(filePath));
+                //ds.Tables[0].Rows
+ //               MessageBox.Show(ds.Tables[0].Rows[0][1].ToString());
+//                ds.Tables[0].Rows.Add(dataGridView1.Rows.Count, Path.GetFileName(filePath), filePath,
+//                   Path.GetExtension(filePath).Replace(".", ""), System.IO.File.GetAccessControl(filePath).GetOwner(typeof(System.Security.Principal.NTAccount)).ToString(),
+//                File.GetCreationTime(filePath), File.GetLastWriteTime(filePath));
+
                 //                        dataGridView1.Rows.Add(dataGridView1.Rows.Count, filePath.GetFileName(filePath))
                 //Read the contents of the file into a stream
                 //                        var fileStream = openFileDialog.OpenFile();
@@ -92,7 +111,6 @@ namespace WindowsFormsApp1
                 //                        {
                 //                            fileContent = reader.ReadToEnd();
                 //                        }
-
             };
 
             //                MessageBox.Show(Path.GetFileName(filePath));
@@ -105,6 +123,9 @@ namespace WindowsFormsApp1
             threadGetFile.ApartmentState = ApartmentState.STA;
             threadGetFile.Start();
             threadGetFile.Join();
+            ds.Tables[0].Rows.Add(dataGridView1.Rows.Count, Path.GetFileName(filePath), filePath,
+            Path.GetExtension(filePath).Replace(".", ""), System.IO.File.GetAccessControl(filePath).GetOwner(typeof(System.Security.Principal.NTAccount)).ToString(),
+            File.GetCreationTime(filePath), File.GetLastWriteTime(filePath));
             dataGridView1.Update();
             dataGridView1.Refresh();
 

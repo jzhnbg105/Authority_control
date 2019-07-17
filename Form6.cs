@@ -234,7 +234,7 @@ namespace WindowsFormsApp1
             var excel = new Excel.Application();
             foreach (ListViewItem file in listView1.Items)
             {
-                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.PasswordChar, WriteResPassword: Write_Pass.PasswordChar, ReadOnly: false, IgnoreReadOnlyRecommended: true);
+                var workbook = excel.Workbooks.Open(file.Text, Password: WB_Pass.Text, WriteResPassword: Write_Pass.Text, ReadOnly: false, IgnoreReadOnlyRecommended: true);
                 try
                 {
                     for (int i = 1; i <= workbook.Sheets.Count; i++)
@@ -242,6 +242,7 @@ namespace WindowsFormsApp1
                         var sheet = (Excel.Worksheet)workbook.Worksheets.Item[i];
                         if (sheet.Name.Contains(Key_Word_Text.Text))
                         {
+                            Console.WriteLine(sheet.Name);
                             //                            sheet.Columns.Insert(1, 2);
                             sheet.Range[Selected_Cell_Text.Text].Formula = Input_Form_Text.Text;
                             //                            sheet.Range[Added_Range.Text].Insert(Excel.XlInsertShiftDirection.xlShiftToRight);
